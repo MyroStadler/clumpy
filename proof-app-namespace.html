@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TITLE</title>
+<script>
+    window.onload = onWindowLoaded;
+    function onWindowLoaded(){
+        var app = new Application();
+        app.start();
+    }
+    function Application(){
+        // keep state in a single object for easy serialisation
+        var update = {
+            response:null
+        };
+        // make start callable from outside by using this.start -
+        this.start = function() {
+            // do here what you would usually do in onWindowLoaded
+            test();
+        };
+        // other functions go here, not callable from outside
+        function test() {
+            alert('test');
+        }
+    }
+</script>
+</head>
+<body>
+    <p>This demonstrates the use of an Application namespace to keep global scope tidy.</p>
+</body>
+</html>

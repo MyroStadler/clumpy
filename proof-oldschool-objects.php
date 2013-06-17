@@ -1,0 +1,46 @@
+<?php
+?>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TITLE</title>
+
+<!-- Dependencies used in extending superclasses must be included here...  -->
+<script src="js/oldschool/com.myrostadler.example.Shape.js"></script>
+<script src="js/oldschool/com.myrostadler.example.Circle.js"></script>
+
+<script>
+    window.onload = onWindowLoaded;
+    function onWindowLoaded(){
+        var canvas = document.getElementById('canvas1');
+        var shape = new Shape(0, 1, 2);
+        var circle = new Circle(100, 101, 102, 103);
+        shape.render(canvas);
+        shape.shapeTest();
+        circle.render(canvas);
+        circle.circleTest();
+        circle.shapeTest();
+        console.log('----------- the above should be: ');
+        console.log('Rendering Shape to canvas');
+        console.log('shapeTest');
+        console.log('Rendering Circle to canvas');
+        console.log('circleTest');
+        console.log('shapeTest');
+        console.log('----------- inheritance check: ');
+        console.log('shape instanceof Object (true?) ' + (shape instanceof Object));
+        console.log('shape instanceof Shape (true?) ' + (shape instanceof Shape));
+        console.log('shape instanceof Circle (false?) ' + (shape instanceof Circle));
+        console.log('circle instanceof Object (true?) ' + (circle instanceof Object));
+        console.log('circle instanceof Shape (true?) ' + (circle instanceof Shape));
+        console.log('circle instanceof Circle (true?) ' + (circle instanceof Circle));
+    }
+</script>
+</head>
+<body>
+    <p>Check the console.</p>
+    <canvas id="canvas1">
+        <p>Your browser does not support HTML5 canvas.</p>
+    </canvas>
+</body>
+</html>
