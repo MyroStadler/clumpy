@@ -15,3 +15,6 @@ The effect is that similar operations are grouped together instead of littered a
 
 zjax uses a very similar interface to JQuery .ajax, in fact as similar as possible so it can be as near to a drop-in replacement as possible. Please see the proofs included here for examples of how zjax works.
 
+
+
+TODO: everything
