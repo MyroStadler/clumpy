@@ -16,5 +16,15 @@ The effect is that similar operations are grouped together instead of littered a
 zjax uses a very similar interface to JQuery .ajax, in fact as similar as possible so it can be as near to a drop-in replacement as possible. Please see the proofs included here for examples of how zjax works.
 
 
+Proofs
+======
 
-TODO: everything
+proof-app-namespace.html - Shows the correct way to encapsulate a javascript application so it doesn't clutter the global scope.
+proof-clumpy-[n]-preload.html - Using clumpy to preload images and audio
+proof-oldschool-objects.html - Shows the use of OO in javascript, the oldschool method not the prototype tools method where there is a create function in object prototype.
+proof-zjax-1-ajaxobjwrapper.html - Using the object wrapper for the ajax data object used by JQuery. A convenience, optional.
+proof-zjax-1-once.html - Using zjax to execute a single request
+proof-zjax-1-repeated - Using zjax to execute a request repeating on an interval
+proof-zjax-1-report.html - Using the reporting functionality of zjax to see what requests have been added to zjax. Each request has a description and id.
+
+
