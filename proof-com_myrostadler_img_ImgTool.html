@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TITLE</title>
+<script src="js/com.myrostadler.img/ImgTool.js"></script>
+<script>
+    window.onload = onWindowLoaded;
+    function onWindowLoaded(){
+        // red box on screen is the original size, blue box is what we want to resize it to
+        var imgTool = new com_myrostadler_img_ImgTool();
+        var img = document.getElementById('img-resize');
+        var imgWidthOrig = img.width;
+        var imgHeightOrig = img.height;
+        var container = document.getElementById('resize-frame');
+        // fit = no cropping with negative space around image
+        var scaleFit = imgTool.getScale(imgWidthOrig, imgHeightOrig, container.offsetWidth, container.offsetHeight, 'fit');
+        // fill = no negative space, with cropping
+        var scaleFill = imgTool.getScale(imgWidthOrig, imgHeightOrig, container.offsetWidth, container.offsetHeight, 'fill');
+        // resize it (to fill in this example)
+        img.width = imgWidthOrig * scaleFill;
+        img.height = imgHeightOrig * scaleFill;
+        // reposition it to be centred
+        var offsets = imgTool.getCentredOffsets(img.width, img.height, container.offsetWidth, container.offsetHeight);
+        img.style.left = offsets.x + 'px';
+        img.style.top = offsets.y + 'px';
+    }
+</script>
+<style>
+    #img-container {
+        position:absolute;
+        border:1px solid red;
+        width:520px;
+        height:439px;
+    }
+    #resize-frame {
+        position:absolute;
+        border:1px solid blue;
+        width:400px;
+        height:200px;
+    }
+    #img-resize {
+        position:absolute;
+    }
+</style>
+</head>
+<body>
+    <div id="img-container">
+        <img id="img-resize" src="images/d20.jpg" />
+    </div>
+    <div id="resize-frame">
+        &nbsp;
+    </div>
+    
+</body>
+</html>
