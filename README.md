@@ -27,7 +27,3 @@ proof-zjax-1-once.html - Using zjax to execute a single request
 proof-zjax-1-repeated - Using zjax to execute a request repeating on an interval
 proof-zjax-1-report.html - Using the reporting functionality of zjax to see what requests have been added to zjax. Each request has a description and id.
 
-
-James is awesome.
-
-
