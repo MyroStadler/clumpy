@@ -115,12 +115,23 @@ window.zjax = function(debug){
         stop(id);
         delete collection[id];
     }
-    function execute(id){
+    function execute(id, optionalDataSubstitute){
 //        console.log('execute ' + id);
         var settings = collection[id];
         if(!settings) {
             return null;
         }
+        var restoreData = false;
+        if(optionalDataSubstitute) {
+            try {
+                restoreData = settings.ajaxObj().data;
+            }catch(err){
+                restoreData = null;
+                clumpy.log(err);
+            }
+            settings.ajaxObj().data = optionalDataSubstitute;
+        }
+//        clumpy.log(settings.ajaxObj());
         var request = $.ajax(settings.ajaxObj());
         request.done(function(data){
             zjaxDone(settings.id(), settings.desc());
@@ -140,6 +151,10 @@ window.zjax = function(debug){
                 settings.always().call(null, id);
             }
         });
+        // could be false or (null or a value) if a substitute data param was passed above
+        if(restoreData !== false) {
+            settings.ajaxObj().data = restoreData;
+        }
         return zjax;
     }
     function getSettings(id) {
@@ -193,7 +208,7 @@ window.zjax = function(debug){
     // explicitly defined interface
     zjax.add = function(id) {return add(id);};
     zjax.remove = function(id) {remove(id);};
-    zjax.execute = function (id) {return execute(id);};
+    zjax.execute = function (id, optionalDataSubstitute) {return execute(id, optionalDataSubstitute);};
     zjax.repeat = function (id, milli) {return repeat(id, milli);};
     zjax.stop = function (id) {return stop(id);};
     zjax.getSettings = function(id) {return getSettings(id);};
