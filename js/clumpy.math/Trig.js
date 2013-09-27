@@ -40,7 +40,7 @@ clumpy_math_Trig.rotate = function (ao, rads) {
     if (H === 0) {
         H = 0.001;
     }
-    var currentRads = clumpy_math_Trig.signAs(clumpy_math_Trig.solveTAH(ret.a, H), ret.o);
+    var currentRads = clumpy_math_Trig.signAs(clumpy_math_Trig.solveTAH(ao.a, H), ao.o);
     return {
         a: clumpy_math_Trig.solveAHT(H, currentRads + rads),
         o: clumpy_math_Trig.solveOHT(H, currentRads + rads)

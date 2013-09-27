@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TITLE</title>
+<script src="js/jquery-1.8.3.min.js"></script>
+<script src="js/json2.js"></script>
+<script src="js/clumpy-1.js"></script>
+
+<script src="js/clumpy.math/Trig.js"></script>
+<script src="js/clumpy.d3/D3.js"></script>
+<script>
+    window.onload = onWindowLoaded;
+    var d3 = new clumpy_d3_D3();
+    var world = {x:300, y:300, z:0};
+    var box = {x:200, y:0, z:0};
+    function onWindowLoaded(){
+        setInterval(tick, 50);
+    }
+    var boxFlat = {};
+    function tick() {
+        var ao = clumpy_math_Trig.rotate({a:box.x, o:box.z}, 0.1);
+        box.x = ao.a;
+        box.z = ao.o;
+        d3.flatten(box, boxFlat);
+//        clumpy.log(boxFlat);
+        var size = Math.round(100 * boxFlat.scale);
+        var margin = Math.round(-50 * boxFlat.scale);
+        $('#box').css({width:size, height:size, marginleft:margin, margintop:margin, top:world.y + boxFlat.y, left:world.x + boxFlat.x});
+    }
+    
+
+</script>
+<style>
+    #box {position:absolute; background:red; width:100px; height:100px; top:50px; left:50px; margin-top:-50px; margin-left:-50px;}
+</style>
+</head>
+<body>
+    <span id="box"></span>
+</body>
+</html>
