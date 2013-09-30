@@ -4,18 +4,29 @@ function clumpy_d3_D3(scale, fov, middleZ, xTilt) {
     this.fov = fov ? fov : 500;
     this.middleZ = middleZ ? middleZ : 500;
     this.xTilt = xTilt ? xTilt : 0;
+//    this.pan = {x:1, y:1, z:1};
+//    this._temp = {x:0, y:0, z:0};
 }
 clumpy_d3_D3.prototype.flatten = function(xyz, pooledReturnObject) {
     var x = xyz.x;
     var y = xyz.y;
     var z = xyz.z;
     var ret = pooledReturnObject ? pooledReturnObject : {};
-    if (this.xTilt !== 0) {
-            var ao = clumpy_math_Trig.rotate({a: z, o: y}, clumpy_math_Trig.radians(this.xTilt));
-            z = ao.a;
-            y = ao.o;
-    }
+//    if (this.xTilt !== 0) {
+//            var ao = clumpy_math_Trig.rotate({a: z, o: y}, clumpy_math_Trig.radians(this.xTilt));
+//            z = ao.a;
+//            y = ao.o;
+//    }
     z += this.middleZ;
+    
+//    this._temp.x = x*Math.cos(this.pan.x) - z*Math.sin(this.pan.x);
+//    this._temp.z = x*Math.sin(this.pan.x) + z*Math.cos(this.pan.x);
+//    this._temp.y = y*Math.cos(this.pan.y) - this._temp.z*Math.sin(this.pan.y);
+//
+//    z = this._temp.y*Math.cos(this.pan.y) - this._temp.z*Math.sin(this.pan.y);
+//    x = this._temp.x*Math.cos(this.pan.z) - this._temp.y*Math.sin(this.pan.z);
+//    y = this._temp.x*Math.sin(this.pan.z) + this._temp.y*Math.cos(this.pan.z);
+//    console.log(x + ' ' + y + ' ' + z);
     if (z === 0) {
             z = 0.001;
     }

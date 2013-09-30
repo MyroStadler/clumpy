@@ -14,16 +14,31 @@
 //    var d3 = new clumpy_d3_D3(1, 800, 800, -45);
     var d3 = new clumpy_d3_D3(1, 800, 800, 0);
     var world = {x:300, y:300, z:0};
+    var offset = {x:0, y:0, z:0};
     var box = {x:200, y:0, z:0};
     function onWindowLoaded(){
+//        $('.slider').change(onSliderChange);
         setInterval(tick, 50);
     }
+    function onSliderChange(e) {
+        offset.x = Math.round($('#slider-x').val());
+        offset.y = Math.round($('#slider-y').val());
+        offset.z = Math.round($('#slider-z').val());
+//        d3.pan.x = Number($('#slider-xtilt').val());
+        
+//        d3.middleZ = z;
+//        d3.fov = z;
+    }
     var boxFlat = {};
+    var composite = {};
     function tick() {
         var ao = clumpy_math_Trig.rotate({a:box.x, o:box.z}, 0.1);
         box.x = ao.a;
         box.z = ao.o;
-        d3.flatten(box, boxFlat);
+        composite.x = box.x + offset.x;
+        composite.y = box.y + offset.y;
+        composite.z = box.z + offset.z;
+        d3.flatten(composite, boxFlat);
 //        clumpy.log(boxFlat);
         var size = Math.round(100 * boxFlat.scale);
         var margin = Math.round(-50 * boxFlat.scale);
@@ -34,9 +49,18 @@
 </script>
 <style>
     #box {position:absolute; background:red; width:100px; height:100px; top:50px; left:50px; margin-top:-50px; margin-left:-50px;}
+    #slider-x {position:absolute; left:0; top:500px;}
+    #slider-y {position:absolute; left:0; top:550px;}
+    #slider-z {position:absolute; left:0; top:600px;}
+    #slider-xtilt {position:absolute; left:0; top:650px;}
+
 </style>
 </head>
 <body>
     <span id="box"></span>
+    <input class="slider" type="range" id="slider-x" min="-800" max="800" value="0"/> 
+    <input class="slider" type="range" id="slider-y" min="-800" max="800" value="0"/> 
+    <input class="slider" type="range" id="slider-z" min="-800" max="800" value="0"/> 
+    <input class="slider" type="range" id="slider-xtilt" min="-90" max="90" value="0"/> 
 </body>
 </html>
