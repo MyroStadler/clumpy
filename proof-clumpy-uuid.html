@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TITLE</title>
+
+<script src="js/clumpy.core/Clumpy.js"></script>
+<script src="js/clumpy.preload/Images.js"></script>
+<script src="js/clumpy.preload/Audio.js"></script>
+
+
+<script>
+    window.onload = onWindowLoaded;
+    function onWindowLoaded(){
+        var shortest = Infinity;
+        var longest = -Infinity;
+        var uuid;
+        for(var i=0; i<10000; i++) {
+            uuid = clumpy.uuid();
+            if(uuid.length < shortest) {
+                shortest = uuid.length;
+            }
+            if(uuid.length > longest) {
+                longest = uuid.length;
+            }
+            console.log(uuid);
+        }
+        console.log('shortest = ' + shortest);
+        console.log('longest  = ' + longest);
+    }
+</script>
+</head>
+<body>
+    <p>Check the console.</p>
+</body>
+</html>
