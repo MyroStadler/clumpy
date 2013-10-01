@@ -12,11 +12,11 @@ clumpy_d3_D3.prototype.flatten = function(xyz, pooledReturnObject) {
     var y = xyz.y;
     var z = xyz.z;
     var ret = pooledReturnObject ? pooledReturnObject : {};
-//    if (this.xTilt !== 0) {
-//            var ao = clumpy_math_Trig.rotate({a: z, o: y}, clumpy_math_Trig.radians(this.xTilt));
-//            z = ao.a;
-//            y = ao.o;
-//    }
+    if (this.xTilt !== 0) {
+            var ao = clumpy_math_Trig.rotate({a: z, o: y}, clumpy_math_Trig.radians(this.xTilt));
+            z = ao.a;
+            y = ao.o;
+    }
     z += this.middleZ;
     
 //    this._temp.x = x*Math.cos(this.pan.x) - z*Math.sin(this.pan.x);
