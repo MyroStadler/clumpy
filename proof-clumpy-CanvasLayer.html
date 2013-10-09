@@ -6,8 +6,8 @@
 
 <script src="js/jquery-1.8.3.min.js"></script>
 <script src="js/clumpy.core/Clumpy.js"></script>
-<script src="js/clumpy.display/CanvasLayer.js"></script>
-<script src="js/clumpy.display/CanvasContainer.js"></script>
+<script src="js/clumpy.canvas/CanvasLayer.js"></script>
+<script src="js/clumpy.canvas/CanvasContainer.js"></script>
 
 <script>
     window.onload = onWindowLoaded;
@@ -25,10 +25,10 @@
       context.stroke();
     };
     function onWindowLoaded(){
-        container = new clumpy_display_CanvasContainer(document.getElementById('container'));
-        layer1 = new clumpy_display_CanvasLayer('layer1');
-        layer2 = new clumpy_display_CanvasLayer('layer2');
-        layer3 = new clumpy_display_CanvasLayer('layer3').set({renderFunction:renderFunction, width:250, height:250, x:20, y:20});
+        container = new clumpy_canvas_CanvasContainer(document.getElementById('container'));
+        layer1 = new clumpy_canvas_CanvasLayer('layer1');
+        layer2 = new clumpy_canvas_CanvasLayer('layer2');
+        layer3 = new clumpy_canvas_CanvasLayer('layer3').set({renderFunction:renderFunction, width:250, height:250, x:20, y:20});
         container.addChild(layer3);
         layer3.render();
     }

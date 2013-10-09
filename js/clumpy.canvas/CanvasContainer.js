@@ -1,19 +1,19 @@
-function clumpy_display_CanvasContainer(holder) {
+function clumpy_canvas_CanvasContainer(holder) {
     this.holder = holder;
     this.children = [];
     this.zOrderStartsAt = 1;
 }
-clumpy_display_CanvasContainer.prototype.render = function() {
+clumpy_canvas_CanvasContainer.prototype.render = function() {
     for(var i=0; i<this.children.length; i++) {
         this.children[i].render();
     }
 };
-clumpy_display_CanvasContainer.prototype.applyZ = function() {
+clumpy_canvas_CanvasContainer.prototype.applyZ = function() {
     for(var i=0; i<this.children.length; i++) {
         this.children[i].canvas.style.zIndex = i + this.zOrderStartsAt;
     }
 };
-clumpy_display_CanvasContainer.prototype.getChildByName = function(name) {
+clumpy_canvas_CanvasContainer.prototype.getChildByName = function(name) {
     for(var i=0; i<this.children.length; i++) {
         if(this.children[i].name === name){
             return this.children[i];
@@ -21,7 +21,7 @@ clumpy_display_CanvasContainer.prototype.getChildByName = function(name) {
     } 
     return null;
 };
-clumpy_display_CanvasContainer.prototype.contains = function(child) {
+clumpy_canvas_CanvasContainer.prototype.contains = function(child) {
     for(var i=0; i<this.children.length; i++) {
         if(this.children[i].id === child.id){
             return true;
@@ -29,14 +29,14 @@ clumpy_display_CanvasContainer.prototype.contains = function(child) {
     } 
     return false;
 };
-clumpy_display_CanvasContainer.prototype.setChildIndex = function(child, index, doNotApplyZ) {
+clumpy_canvas_CanvasContainer.prototype.setChildIndex = function(child, index, doNotApplyZ) {
     var index = this.getChildIndex(child);
     if(isNaN(index)){
         return;
     }
     this.addChildAt(child, index, doNotApplyZ);
 };
-clumpy_display_CanvasContainer.prototype.getChildIndex = function(child) {
+clumpy_canvas_CanvasContainer.prototype.getChildIndex = function(child) {
     for(var i=0; i<this.children.length; i++) {
         if(this.children[i].id === child.id){
             return i;
@@ -44,10 +44,10 @@ clumpy_display_CanvasContainer.prototype.getChildIndex = function(child) {
     } 
     return NaN;
 };
-clumpy_display_CanvasContainer.prototype.getChildAt = function(index) {
+clumpy_canvas_CanvasContainer.prototype.getChildAt = function(index) {
     return this.children[index];
 };
-clumpy_display_CanvasContainer.prototype.addChildAt = function(child, index, doNotApplyZ) {
+clumpy_canvas_CanvasContainer.prototype.addChildAt = function(child, index, doNotApplyZ) {
     this.removeChild(child);
     this.children.splice(index, 0, child);
     if(!doNotApplyZ){
@@ -56,17 +56,17 @@ clumpy_display_CanvasContainer.prototype.addChildAt = function(child, index, doN
     this.holder.appendChild(child.canvas);
     return this;
 };
-clumpy_display_CanvasContainer.prototype.addChild = function(child) {
+clumpy_canvas_CanvasContainer.prototype.addChild = function(child) {
     this.removeChild(child);
     child.canvas.style.zIndex = this.zOrderStartsAt + this.children.length;
     this.holder.appendChild(child.canvas);
     this.children.push(child);
     return this;
 };
-clumpy_display_CanvasContainer.prototype.getNumChildren = function() {
+clumpy_canvas_CanvasContainer.prototype.getNumChildren = function() {
     return this.children.length;
 };
-clumpy_display_CanvasContainer.prototype.removeChild = function(child) {
+clumpy_canvas_CanvasContainer.prototype.removeChild = function(child) {
     if(child.canvas.parentNode){
         child.canvas.parentNode.removeChild(child);
     }
@@ -75,7 +75,7 @@ clumpy_display_CanvasContainer.prototype.removeChild = function(child) {
         this.children.splice(index, 1);
     }
 };
-clumpy_display_CanvasContainer.prototype.removeChildAt = function(index) {
+clumpy_canvas_CanvasContainer.prototype.removeChildAt = function(index) {
     var child = this.getChildAt(index);
     if(child.canvas.parentNode){
         child.canvas.parentNode.removeChild(child);

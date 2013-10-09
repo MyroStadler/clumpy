@@ -1,5 +1,7 @@
-// requires - clumpy
-function clumpy_display_CanvasLayer(name, canvas){
+// requires: clumpy_core_Clumpy
+function clumpy_canvas_CanvasLayer(name, canvas){
+//    console.log('name2 ' + name);
+//    console.log('canvas2 ' + canvas);
     this.canvas = canvas ? canvas : document.createElement("canvas");
     this.canvas.style.position = 'absolute';
     this.id = clumpy.uuid();
@@ -13,13 +15,13 @@ function clumpy_display_CanvasLayer(name, canvas){
     this.height = 0;
     return this;
 }
-clumpy_display_CanvasLayer.prototype.set = function(props) {
+clumpy_canvas_CanvasLayer.prototype.set = function(props) {
     for(var i in props){
         this[i] = props[i];
     }
     return this;
 };
-clumpy_display_CanvasLayer.prototype.render = function() {
+clumpy_canvas_CanvasLayer.prototype.render = function() {
     this.canvas.width = this.width;
     this.canvas.height = this.height;
     this.canvas.style.top = this.y + 'px';
