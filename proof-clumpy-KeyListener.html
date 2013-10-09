@@ -5,12 +5,9 @@
 <title>TITLE</title>
 
 <script src="js/jquery-1.8.3.min.js"></script>
-<script src="js/clumpy/timers/Scheduler.js"></script>
-<script src="js/clumpy/canvas/CanvasLayer.js"></script>
 <script src="js/clumpy/core/Clumpy.js"></script>
 <script src="js/clumpy/eventing/Callbacks.js"></script>
-<script src="js/clumpy/grid/Grid.js"></script>
-<script src="js/clumpy/canvas/CanvasAnimation.js"></script>
+<script src="js/clumpy/ui/listeners/Keyboard.js"></script>
 
 <script>
     window.onload = onWindowLoaded;
@@ -38,7 +35,7 @@
                 10,
                 75,
                 70);
-        clumpy_eventing_Callbacks.addCallback(clumpy_canvas_CanvasAnimation.EVENT_SPRITE_IMAGE_LOADED, onDragonLoaded);
+        dragon.callbacks.addCallback(clumpy_canvas_CanvasAnimation.EVENT_SPRITE_IMAGE_LOADED, onDragonLoaded);
         dragon.setSpriteUrl('images/dragon.gif');
     }
 </script>

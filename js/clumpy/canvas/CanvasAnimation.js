@@ -14,7 +14,6 @@ function clumpy_canvas_CanvasAnimation(
     this.frame = 1;
     this.offsetX = 0;
     this.offsetY = 0;
-    this.callbacks = new clumpy_eventing_Callbacks();
 }
 clumpy_canvas_CanvasAnimation.EVENT_SPRITE_IMAGE_LOADED = 'onSpriteImageLoaded';
 clumpy_canvas_CanvasAnimation.prototype = new clumpy_canvas_CanvasLayer();
@@ -38,7 +37,7 @@ clumpy_canvas_CanvasAnimation.prototype.setSpriteUrl = function(url){
 };
 clumpy_canvas_CanvasAnimation.prototype._onSpriteImageLoaded = function(e){
     this._spriteLoaded = true;
-    this.callbacks.call(clumpy_canvas_CanvasAnimation.EVENT_SPRITE_IMAGE_LOADED, this);
+    clumpy_eventing_Callbacks.call(clumpy_canvas_CanvasAnimation.EVENT_SPRITE_IMAGE_LOADED, this);
 };
 clumpy_canvas_CanvasAnimation.prototype.prevFrame = function(render){
     var frame = this.frame - 1;
