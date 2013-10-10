@@ -37,12 +37,12 @@ clumpy_eventing_Callbacks.addCallback = function(key, func){
     }
     clumpy_eventing_Callbacks._table[key].push(func);
 };
-clumpy_eventing_Callbacks.call = function(key, dispatcher){
+clumpy_eventing_Callbacks.call = function(key, dispatcher, data){
     var arr = clumpy_eventing_Callbacks._table[key];
     if(!arr){
         return;
     }
     for(var i=0; i<arr.length; i++){
-        arr[i](dispatcher);
+        arr[i](dispatcher, data);
     }
 };

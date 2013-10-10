@@ -11,45 +11,23 @@
 
 <script>
     window.onload = onWindowLoaded;
-    var frameScheduler = new clumpy_timers_Scheduler(50);
-    var dragon;
-    var renderFunction = function(){ 
-        // scope is layer class
-      var context = this.canvas.getContext('2d');
-      context.beginPath();
-      context.rect(0, 0, 250, 100);
-      context.fillStyle = 'yellow';
-      context.fill();
-      context.lineWidth = 7;
-      context.strokeStyle = 'black';
-      context.stroke();
-    };
-    function onDragonLoaded(dispatcher) {
-//        console.log('onDragonLoaded, dispatcher.name=' + dispatcher.name + ', dragon.name=' + dragon.name);
-        frameScheduler.addCall(dragon.nextFrame, dragon, [true]);
-        frameScheduler.start(true);
+    function onKeyDown(keyCode){
+        clumpy.log('local key down: ' + keyCode);
+    }
+    function onKeyUp(keyCode){
+        clumpy.log('local key up: ' + keyCode);
     }
     function onWindowLoaded(){
-        dragon = new clumpy_canvas_CanvasAnimation('dragon', 
-                document.getElementById('testCanvas'), 
-                10,
-                75,
-                70);
-        dragon.callbacks.addCallback(clumpy_canvas_CanvasAnimation.EVENT_SPRITE_IMAGE_LOADED, onDragonLoaded);
-        dragon.setSpriteUrl('images/dragon.gif');
+        var keys = new clumpy_ui_listeners_Keyboard(true);
+        keys.addDown('a', onKeyDown, true);
+        keys.addUp('a', onKeyUp);
     }
 </script>
 
 <style>
-    #container {position:relative; width:500px; height:500px; border:1px solid black; margin:20px;}
-    .button {}
-    #b1 {}
-    #b2 {}
-    #b3 {}
 </style>
 
 </head>
 <body>
-    <canvas id="testCanvas" width="500" height="500"></canvas>
 </body>
 </html>
