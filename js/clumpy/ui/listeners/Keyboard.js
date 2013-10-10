@@ -83,8 +83,8 @@ clumpy_ui_listeners_Keyboard.prototype._continueRepeat = function(keyCode){
     this._repeatIntervalIds[keyCode] = setInterval(function(){this.sendKeyDown(keyCode);}.bindContext(this), this.repeatDelay);
 };
 clumpy_ui_listeners_Keyboard.prototype.sendKeyDown = function(keyCode){
-    clumpy.log('DOWN ' + keyCode + ' ' + String.fromCharCode(keyCode));
     if(this._callbackDown[keyCode]) {
+        // sometimes a callback is not passed, rather the eventing pipeline is used
         if(typeof(this._callbackDown[keyCode]) === "function"){
             this._callbackDown[keyCode](keyCode);
         }
@@ -92,11 +92,10 @@ clumpy_ui_listeners_Keyboard.prototype.sendKeyDown = function(keyCode){
     clumpy_eventing_Callbacks.call(clumpy_ui_listeners_Keyboard.EVENT_KEY_DOWN, this, keyCode);
 };
 clumpy_ui_listeners_Keyboard.prototype.sendKeyUp = function(keyCode){
-    clumpy.log('UP ' + keyCode + ' ' + String.fromCharCode(keyCode));
     if(this._callbackUp[keyCode]) {
         if(typeof(this._callbackUp[keyCode]) === "function"){
             this._callbackUp[keyCode](keyCode);
         }
     }
-    clumpy_eventing_Callbacks.call(clumpy_ui_listeners_Keyboard.EVENT_KEY_DOWN, this, keyCode);
+    clumpy_eventing_Callbacks.call(clumpy_ui_listeners_Keyboard.EVENT_KEY_UP, this, keyCode);
 };
