@@ -13,6 +13,18 @@ function clumpy_ui_listeners_Keyboard(autoStart, repeatInitialDelay, repeatDelay
 }
 clumpy_ui_listeners_Keyboard.EVENT_KEY_DOWN = 'onKeyDown';
 clumpy_ui_listeners_Keyboard.EVENT_KEY_UP = 'onKeyUp';
+clumpy_ui_listeners_Keyboard.prototype.start = function(){
+    document.onkeydown = this._onKeyDown.bindContext(this);
+    document.onkeyup = this._onKeyUp.bindContext(this);
+};
+clumpy_ui_listeners_Keyboard.prototype.stop = function(){
+    document.onkeydown = null;
+    document.onkeyup = null;
+};
+clumpy_ui_listeners_Keyboard.prototype.isDown = function(keyCodeOrString) {
+    var keyCode = this.translateKeyCode(keyCodeOrString);
+    return this._keysDown[keyCode] != null;
+};
 clumpy_ui_listeners_Keyboard.prototype.translateKeyCode = function(keyCodeOrString) {
     // keyCode of a letter is the same as the charcode of its uppercase version
     if(typeof(keyCodeOrString) === 'number'){
@@ -25,10 +37,12 @@ clumpy_ui_listeners_Keyboard.prototype.translateKeyCode = function(keyCodeOrStri
 clumpy_ui_listeners_Keyboard.prototype.addUp = function(keyCodeOrString, callback) {
     var keyCode = this.translateKeyCode(keyCodeOrString);
     this._callbackUp[keyCode] = callback;
+    return this;
 };
 clumpy_ui_listeners_Keyboard.prototype.removeUp = function(keyCodeOrString) {
     var keyCode = this.getKeyCode(keyCodeOrString);
     delete this._callbackUp[keyCode];
+    return this;
 };
 clumpy_ui_listeners_Keyboard.prototype.addDown = function(keyCodeOrString, callback, autoRepeat) {
     var keyCode = this.translateKeyCode(keyCodeOrString);
@@ -36,18 +50,12 @@ clumpy_ui_listeners_Keyboard.prototype.addDown = function(keyCodeOrString, callb
     if(autoRepeat){
         this._isRepeating[keyCode] = true;
     }
+    return this;
 };
 clumpy_ui_listeners_Keyboard.prototype.removeDown = function(keyCodeOrString) {
     var keyCode = this.getKeyCode(keyCodeOrString);
     delete this._callbackDown[keyCode];
-};
-clumpy_ui_listeners_Keyboard.prototype.start = function(){
-    document.onkeydown = this._onKeyDown.bindContext(this);
-    document.onkeyup = this._onKeyUp.bindContext(this);
-};
-clumpy_ui_listeners_Keyboard.prototype.stop = function(){
-    document.onkeydown = null;
-    document.onkeyup = null;
+    return this;
 };
 clumpy_ui_listeners_Keyboard.prototype.clear = function(){
     // TODO - remove all, set state to starting state with all empty logs etc.
@@ -65,7 +73,7 @@ clumpy_ui_listeners_Keyboard.prototype._onKeyDown = function(e){
 };
 clumpy_ui_listeners_Keyboard.prototype._onKeyUp = function(e){
     e = clumpy.getEventObject(e);
-    this._keysDown[e.keyCode] = false;
+    delete this._keysDown[e.keyCode];
     this._clearRepeat(e.keyCode);
     this.sendKeyUp(e.keyCode);
 };

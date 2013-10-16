@@ -8,6 +8,7 @@ function clumpy_timers_Scheduler(milliseconds, autoStart) {
         start();
     }
     this._onIntervalDelegate = this.call.bindContext(this);
+    return this;
 }
 clumpy_timers_Scheduler.prototype.start = function(callOnStart) {
     if(this._running){
@@ -18,6 +19,7 @@ clumpy_timers_Scheduler.prototype.start = function(callOnStart) {
     if(callOnStart){
         this.call();
     }
+    return this;
 };
 clumpy_timers_Scheduler.prototype.stop = function() {
     if(!this._running){
@@ -25,6 +27,7 @@ clumpy_timers_Scheduler.prototype.stop = function() {
     }
     clearInterval(this._intervalId);
     this._running = false;
+    return this;
 };
 clumpy_timers_Scheduler.prototype.setMilliseconds = function(milliseconds, noRefresh) {
     this._milliseconds = milliseconds;
@@ -32,6 +35,7 @@ clumpy_timers_Scheduler.prototype.setMilliseconds = function(milliseconds, noRef
         this.stop();
         this.start();
     }
+    return this;
 };
 clumpy_timers_Scheduler.prototype.removeCall = function(func) {
     for(var i=0; i<this._calls.length; i++){
@@ -40,10 +44,12 @@ clumpy_timers_Scheduler.prototype.removeCall = function(func) {
             break;
         }
     }
+    return this;
 };
 clumpy_timers_Scheduler.prototype.addCall = function(func, context, args) {
     this.removeCall(func);
     this._calls.push([func, context, args]);
+    return this;
 };
 clumpy_timers_Scheduler.prototype.call = function() {
     var obj;
@@ -51,4 +57,5 @@ clumpy_timers_Scheduler.prototype.call = function() {
         obj = this._calls[i];
         obj[0].apply(obj[1], obj[2]);
     }
+    return this;
 };
