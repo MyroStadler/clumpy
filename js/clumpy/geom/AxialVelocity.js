@@ -1,26 +1,24 @@
 function clumpy_geom_AxialVelocity() {
     this.scale = 1;
+    this.resistance = 0.1; // resistance / friction
     // x
     this.vX = 0;
     this.accX = 1;
     this.decX = 1;
     this.maxX = 10;
     this.minX = -10;
-    this.resX = 0.25; // rsistance / fristion
     // y
     this.vY = 0;
     this.accY = 1;
     this.decY = 1;
     this.maxY = 10;
     this.minY = -10;
-    this.resY = 0.25;
     // z
     this.vZ = 0;
     this.accZ = 1;
     this.decZ = 1;
     this.maxZ = 10;
     this.minZ = -10;
-    this.resZ = 0.25;
     return this;
 }
 clumpy_geom_AxialVelocity.X = 1;
@@ -41,19 +39,25 @@ clumpy_geom_AxialVelocity.prototype.set = function(prop, val) {
     }
     return this;
 };
-clumpy_geom_AxialVelocity.prototype.resist = function(xyz, n){
+clumpy_geom_AxialVelocity.prototype.resist = function(n){
+    var coeff = 1 - (n ? n : this.resistance);
+    this.vX *= coeff;
+    this.vY *= coeff;
+    this.vZ *= coeff;
+};
+clumpy_geom_AxialVelocity.prototype.reduce = function(xyz, n){
     if(xyz & clumpy_geom_AxialVelocity.X){
-        this.vX = this._resist(this.vX, n ? n : this.resX);
+        this.vX = this._reduce(this.vX, n ? n : this.resX);
     }
     if(xyz & clumpy_geom_AxialVelocity.Y){
-        this.vY = this._resist(this.vY, n ? n : this.resY);
+        this.vY = this._reduce(this.vY, n ? n : this.resY);
     }
     if(xyz & clumpy_geom_AxialVelocity.Z){
-        this.vZ = this._resist(this.vZ, n ? n : this.resZ);
+        this.vZ = this._reduce(this.vZ, n ? n : this.resZ);
     }
     return this;
 };
-clumpy_geom_AxialVelocity.prototype._resist = function(v, n){
+clumpy_geom_AxialVelocity.prototype._reduce = function(v, n){
     if(n === 0 || v === 0){
         return 0;
     }

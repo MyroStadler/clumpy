@@ -21,7 +21,8 @@
         // gravity!
 //        velocity.accelerateY(0.1);
         // friction!
-        velocity.resist(clumpy_geom_AxialVelocity.X | clumpy_geom_AxialVelocity.Y | clumpy_geom_AxialVelocity.Z);
+//        velocity.reduce(clumpy_geom_AxialVelocity.X | clumpy_geom_AxialVelocity.Y | clumpy_geom_AxialVelocity.Z);
+        velocity.resist();
         markerPos.left += velocity.vX;
         markerPos.top += velocity.vY;
         $('#marker').css(markerPos);
