@@ -56,6 +56,6 @@ clumpy_canvas_CanvasAnimation.prototype.render = function(){
     var d2 = this.canvas.getContext('2d');
     d2.drawImage(this._spriteImage, 
             rect.x, rect.y, rect.width, rect.height,
-            0, 0, rect.width * 2, rect.height);
+            0, 0, rect.width * this, rect.height);
 };
 
