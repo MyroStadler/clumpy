@@ -10,9 +10,12 @@ function clumpy_canvas_CanvasLayer(name, canvas){
     this.renderFunctionArgs = null;
     this.x = 0;
     this.y = 0;
-    this.z = 0;
+    this.scale = 1;
+    this.d3 = {x:0, y:0, z:0};
     this.width = 0;
     this.height = 0;
+    this.offsetX = 0;
+    this.offsetY = 0;
     return this;
 }
 clumpy_canvas_CanvasLayer.prototype.set = function(props) {
@@ -22,10 +25,10 @@ clumpy_canvas_CanvasLayer.prototype.set = function(props) {
     return this;
 };
 clumpy_canvas_CanvasLayer.prototype.render = function() {
-    this.canvas.width = this.width;
-    this.canvas.height = this.height;
-    this.canvas.style.top = this.y + 'px';
-    this.canvas.style.left = this.y + 'px';
+    this.canvas.width = Math.round(this.width * this.scale);
+    this.canvas.height = Math.round(this.height * this.scale);
+    this.canvas.style.top = Math.round(this.y + (this.offsetY * this.scale)) + 'px';
+    this.canvas.style.left = Math.round(this.x + (this.offsetX * this.scale)) + 'px';
     if(this.renderFunction){
         this.renderFunction.apply(this, this.renderFunctionArgs);
     }

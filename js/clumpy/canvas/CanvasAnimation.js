@@ -12,8 +12,6 @@ function clumpy_canvas_CanvasAnimation(
     this.grid = new clumpy_grid_Grid(nFrames, NaN, frameSizeX, frameSizeY);
     this.state = 1;
     this.frame = 1;
-    this.offsetX = 0;
-    this.offsetY = 0;
 }
 clumpy_canvas_CanvasAnimation.EVENT_SPRITE_IMAGE_LOADED = 'onSpriteImageLoaded';
 clumpy_canvas_CanvasAnimation.prototype = new clumpy_canvas_CanvasLayer();
@@ -58,6 +56,6 @@ clumpy_canvas_CanvasAnimation.prototype.render = function(){
     var d2 = this.canvas.getContext('2d');
     d2.drawImage(this._spriteImage, 
             rect.x, rect.y, rect.width, rect.height,
-            this.offsetX, this.offsetY, rect.width, rect.height);
+            0, 0, rect.width, rect.height);
 };
 
