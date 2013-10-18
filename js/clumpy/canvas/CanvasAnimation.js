@@ -7,8 +7,8 @@ function clumpy_canvas_CanvasAnimation(
         frameSizeY) {
     clumpy_canvas_CanvasLayer.call(this, name, canvas);
     this.nFrames = nFrames ? nFrames : 1;
-    this.width = 500;//frameSizeX ? frameSizeX : 0;
-    this.height = 500;//frameSizeY ? frameSizeY : 0;
+    this.width = frameSizeX;//frameSizeX ? frameSizeX : 0;
+    this.height = frameSizeY;//frameSizeY ? frameSizeY : 0;
     this.grid = new clumpy_grid_Grid(nFrames, NaN, frameSizeX, frameSizeY);
     this.state = 1;
     this.frame = 1;
@@ -56,6 +56,6 @@ clumpy_canvas_CanvasAnimation.prototype.render = function(){
     var d2 = this.canvas.getContext('2d');
     d2.drawImage(this._spriteImage, 
             rect.x, rect.y, rect.width, rect.height,
-            0, 0, rect.width, rect.height);
+            0, 0, rect.width * 2, rect.height);
 };
 
