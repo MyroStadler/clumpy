@@ -53,9 +53,10 @@ clumpy_canvas_CanvasAnimation.prototype.render = function(){
     }
     clumpy_canvas_CanvasLayer.prototype.render.call(this);
     var rect = this.grid.getRectByNumbers(this.frame, this.state);
+//    console.log(rect);
     var d2 = this.canvas.getContext('2d');
     d2.drawImage(this._spriteImage, 
             rect.x, rect.y, rect.width, rect.height,
-            0, 0, rect.width * this, rect.height);
+            0, 0, rect.width * this.scale, rect.height * this.scale);
 };
 

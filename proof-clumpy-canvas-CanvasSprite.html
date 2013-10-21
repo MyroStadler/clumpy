@@ -10,6 +10,7 @@
 <script src="js/clumpy/timers/Scheduler.js"></script>
 <script src="js/clumpy/eventing/Callbacks.js"></script>
 <script src="js/clumpy/ui/listeners/Keyboard.js"></script>
+<script src="js/clumpy/math/Byte.js"></script>
 <script src="js/clumpy/math/Trig.js"></script>
 <script src="js/clumpy/d3/D3.js"></script>
 <script src="js/clumpy/grid/Grid.js"></script>
@@ -20,14 +21,41 @@
 
 <script>
     window.onload = onWindowLoaded;
-    var d3 = new clumpy_d3_D3(1, 1000, 1000, 15);
-    var world = {x:500, y:500, z:0};
+    var d3 = new clumpy_d3_D3(1, 500, 500, -20);
     var ticker = new clumpy_timers_Scheduler(50, false).addCall(render, this);
     var keys = new clumpy_ui_listeners_Keyboard(true, 50, 50);
     var dragon;
-    dragon.d3.y = 25;
     var plane = {nCols:10, nRows:10, cellSize:100};
+    var byte = new clumpy_math_Byte();
     function render() {
+        if(byte.test(3)){
+            // left and up
+            dragon.state = 6;
+        }else if(byte.test(6)){
+            // right and up
+            dragon.state = 8;
+        }else if(byte.test(12)){
+            // right and down
+            dragon.state = 2;
+        }else if(byte.test(9)){
+            // left and down
+            dragon.state = 4;
+        }else if(byte.test(2)){
+            // up
+            dragon.state = 7;
+        }else if(byte.test(4)){
+            // right
+            dragon.state = 1;
+        }else if(byte.test(8)){
+            // down
+            dragon.state = 3;
+        }else if(byte.test(1)){
+            // left
+            dragon.state = 5;
+        }
+        dragon.moveD3();
+        dragon.velocity.resist();
+        d3.flatten(dragon.d3, dragon);
         dragon.nextFrame(true);
     } 
     function onWindowLoaded(){
@@ -36,31 +64,56 @@
                 10,
                 75,
                 70).set({offsetX:37, offsetY:35});
+        dragon.d3.y = -25;
         keys.addDown(37, onKeyDown, true).addDown(38, onKeyDown, true).addDown(39, onKeyDown, true).addDown(40, onKeyDown, true);
-//        keys.addUp(37, onKeyUp).addUp(38, onKeyUp).addUp(39, onKeyUp).addUp(40, onKeyUp);
+        keys.addUp(37, onKeyUp).addUp(38, onKeyUp).addUp(39, onKeyUp).addUp(40, onKeyUp);
         drawPlane();
         dragon.setSpriteUrl('images/dragon.gif');
         render();
         ticker.start();
     }
     
+    function onKeyUp(keyCode){
+        switch(keyCode){
+            // arrow left - 37
+            case 37:
+                byte.remove(1);
+                break;
+            // arrow up - 38
+            case 38:
+                byte.remove(2);
+                break;
+            // arrow right - 39
+            case 39:
+                byte.remove(4);
+                break;
+            // arrow down - 40
+            case 40:
+                byte.remove(8);
+                break;
+        }
+    }
     function onKeyDown(keyCode){
         switch(keyCode){
             // arrow left - 37
             case 37:
-                velocity.decelerate(clumpy_geom_AxialVelocity.X);
+                dragon.velocity.decelerate(clumpy_geom_AxialVelocity.X);
+                byte.add(1);
                 break;
             // arrow up - 38
             case 38:
-                velocity.decelerate(clumpy_geom_AxialVelocity.Y);
+                dragon.velocity.accelerate(clumpy_geom_AxialVelocity.Z);
+                byte.add(2);
                 break;
             // arrow right - 39
             case 39:
-                velocity.accelerate(clumpy_geom_AxialVelocity.X);
+                dragon.velocity.accelerate(clumpy_geom_AxialVelocity.X);
+                byte.add(4);
                 break;
             // arrow down - 40
             case 40:
-                velocity.accelerate(clumpy_geom_AxialVelocity.Y);
+                dragon.velocity.decelerate(clumpy_geom_AxialVelocity.Z);
+                byte.add(8);
                 break;
         }
     }
@@ -72,12 +125,15 @@
 
 <style>
     html, body {width:100%; height:100%;}
-    #canvas1 {position:absolute; z-index:1; top:0; left:0; width:1000px; height:1000px;}
-    #canvas2 {position:absolute; z-index:2; top:0; left:0; border:2px solid black;} 
+    #world {position:absolute; z-index:1; top:250px; left:250px; overflow:visible;}
+    #canvas1 {position:absolute; z-index:1; top:-250px; left:-250px; width:500px; height:500px; border:1px solid black;}
+    #canvas2 {position:absolute; z-index:2; top:0; left:0;} 
 </style>
 </head>
 <body>
-    <canvas id="canvas1"></canvas>
-    <canvas id="canvas2"></canvas>
+    <div id="world">
+        <canvas id="canvas1"></canvas>
+        <canvas id="canvas2"></canvas>
+    </div>
 </body>
 </html>
