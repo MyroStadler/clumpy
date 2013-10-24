@@ -21,11 +21,11 @@
 
 <script>
     window.onload = onWindowLoaded;
-    var d3 = new clumpy_d3_D3(1, 500, 500, -20);
+    var d3 = new clumpy_d3_D3(1, 500, 500, -30);
     var ticker = new clumpy_timers_Scheduler(50, false).addCall(render, this);
     var keys = new clumpy_ui_listeners_Keyboard(true, 50, 50);
     var dragon;
-    var plane = {nCols:10, nRows:10, cellSize:100};
+    var plane = {nCols:20, nRows:10, cellSize:100};
     var byte = new clumpy_math_Byte();
     function render() {
         if(byte.test(3)){
@@ -119,20 +119,40 @@
     }
     
     function drawPlane() {
-        
+        var xz = {x:0, y:0, z:0};
+        var flat = {x:0, y:0, scale:1};
+        var normalSize = 10;
+        var context = document.getElementById('canvas1').getContext('2d');
+        context.fillStyle = "#000000";
+        context.globalAlpha = 0.5;
+        // var plane = {nCols:10, nRows:10, cellSize:100};
+        for(var x=(-plane.nCols*plane.cellSize/2);x<=(plane.nCols*plane.cellSize/2);x+=plane.cellSize){
+            for(var z=(-plane.nCols*plane.cellSize/2);z<=(plane.nCols*plane.cellSize/2);z+=plane.cellSize){
+                xz.x = x;
+                xz.z = z;
+                if(xz.z <= -d3.middleZ) {
+                    continue;
+                }
+                d3.flatten(xz, flat);
+                context.beginPath();
+                context.arc(flat.x + 250, flat.y + 250, normalSize * flat.scale, 0, Math.PI*2, true); 
+                context.closePath();
+                context.fill();
+            }
+        }
     }
 </script>
 
 <style>
-    html, body {width:100%; height:100%;}
+    html, body {margin:0; padding:0; width:100%; height:100%;}
     #world {position:absolute; z-index:1; top:250px; left:250px; overflow:visible;}
-    #canvas1 {position:absolute; z-index:1; top:-250px; left:-250px; width:500px; height:500px; border:1px solid black;}
-    #canvas2 {position:absolute; z-index:2; top:0; left:0;} 
+    #canvas1 {position:absolute; z-index:1; top:-250px; left:-250px;}
+    #canvas2 {position:absolute; z-index:2; top:-250px; left:-250px;} 
 </style>
 </head>
 <body>
     <div id="world">
-        <canvas id="canvas1"></canvas>
+        <canvas id="canvas1" width="500" height="500"></canvas>
         <canvas id="canvas2"></canvas>
     </div>
 </body>
