@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TITLE</title>
+<script src="js/jquery-1.8.3.min.js"></script>
+<script src="js/json2.js"></script>
+
+<script src="js/clumpy/core/Clumpy.js"></script>
+<script src="js/clumpy/math/Trig.js"></script>
+<style>
+    html, body{margin:0;padding:0;width:100%;height:100%;}
+    #dial1 {
+        border:1px solid black;
+        margin:100px;
+        position:relative;
+    }
+    .bg {
+        position:absolute;
+        z-index:1;
+        background-color: #ccf;
+        /*position your bg image topleft*/
+        width:0;
+        height:0;
+    }
+
+    .head {
+        position:absolute;
+        height:6px;
+        width:6px;
+        background-color: #0f0;
+        top:117px;
+        left:17px;
+        z-index:3;
+    }
+</style>
+<script>
+    window.onload = onWindowLoaded;
+    var model = {
+        dial:null,
+        radius:100, 
+        bgPadding:20
+    };
+    function onWindowLoaded(){
+        var dial1 = $('#dial1');
+        dial1.css({
+            width:(model.radius + model.bgPadding) * 2, 
+            height:model.radius + model.bgPadding
+        });
+        initDial(dial1);
+    }
+    
+    function initDial(jqContainer){
+        jqContainer.mousedown(onDialMouseDown);
+    }
+    function stopDialDrag(jqTarget){
+        $(window).unbind('mouseup');
+        $(window).unbind('mousemove');
+        model.dial = null;
+    }
+    function onDialMouseDown(e) {
+        e = clumpy.getEventObject(e);
+        var eTarget = clumpy.getEventCurrentTarget(e);
+        model.dial = $(eTarget);
+        $(window).mouseup(onDialMouseUpViaWindow);
+        $(window).mousemove(onDialMouseMoveViaWindow);
+        showProjected(model.dial, e.pageX, e.pageY);
+    }
+    function onDialMouseUpViaWindow(e) {
+        stopDialDrag();
+    }
+    
+    function onDialMouseMoveViaWindow(e) {
+        e = clumpy.getEventObject(e);
+//        var eTarget = clumpy.getEventCurrentTarget(e);
+        showProjected(model.dial, e.pageX, e.pageY);
+    }
+    
+    function showProjected(jqContainer, pageX, pageY){
+        var sensorOffset = jqContainer.offset();
+        var maxPageY = sensorOffset.top + model.radius + model.bgPadding;
+        if(pageY > maxPageY){
+            pageY = maxPageY;
+        }
+//        console.log(sensorOffset);
+        var middle = {x:sensorOffset.left + model.radius + model.bgPadding,
+                y:sensorOffset.top + model.radius + model.bgPadding};
+//        console.log(middle);
+        var current = {x:pageX - middle.x, y:pageY - middle.y};
+//        console.log('Current: ' + current.x + ' ' + current.y);
+//        var radius = clumpy_math_Trig.solveH(current.x, current.y);
+//        console.log('Radius ' + radius);
+        var radians = clumpy_math_Trig.solveRXY(current.x, current.y);
+//        console.log('Degrees ' + degrees);
+        var head = jqContainer.find('.head');
+        var projected = {x:clumpy_math_Trig.solveAHT(model.radius, radians), 
+                        y:clumpy_math_Trig.solveOHT(model.radius, radians)};
+        head.css({top:model.bgPadding + model.radius + projected.y - head.width() / 2, 
+            left:model.bgPadding + model.radius + projected.x - head.height() / 2});
+        jqContainer.find('.bg').css({
+            top:model.bgPadding - head.height() / 2, 
+            left:model.bgPadding, 
+            width:model.radius + projected.x, 
+            height:model.radius + head.height() / 2});
+    }
+
+</script>
+</head>
+<body>
+    <div id="dial1">
+        <div class="bg"></div>
+        <div class="head"></div>
+    </div>
+</body>
+</html>

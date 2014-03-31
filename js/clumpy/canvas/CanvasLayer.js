@@ -11,7 +11,7 @@ function clumpy_canvas_CanvasLayer(name, canvas){
     this.x = 0;
     this.y = 0;
     this.scale = 1;
-    this.d3 = {x:0, y:0, z:0};
+    this.xyz = {x:0, y:0, z:0};
     this.width = 0;
     this.height = 0;
     this.offsetX = 0;

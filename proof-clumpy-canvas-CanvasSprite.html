@@ -25,9 +25,11 @@
     var ticker = new clumpy_timers_Scheduler(50, false).addCall(render, this);
     var keys = new clumpy_ui_listeners_Keyboard(true, 50, 50);
     var dragon;
-    dragon.d3.y = 25;
     var plane = {nCols:10, nRows:10, cellSize:100};
     function render() {
+        console.log('render');
+        d3.flatten(dragon.xyz, dragon);
+        dragon.move(dragon);
         dragon.nextFrame(true);
     } 
     function onWindowLoaded(){
@@ -36,6 +38,7 @@
                 10,
                 75,
                 70).set({offsetX:37, offsetY:35});
+    dragon.xyz.y = 25;
         keys.addDown(37, onKeyDown, true).addDown(38, onKeyDown, true).addDown(39, onKeyDown, true).addDown(40, onKeyDown, true);
 //        keys.addUp(37, onKeyUp).addUp(38, onKeyUp).addUp(39, onKeyUp).addUp(40, onKeyUp);
         drawPlane();
@@ -48,19 +51,19 @@
         switch(keyCode){
             // arrow left - 37
             case 37:
-                velocity.decelerate(clumpy_geom_AxialVelocity.X);
+                dragon.velocity.decelerate(clumpy_geom_AxialVelocity.X);
                 break;
             // arrow up - 38
             case 38:
-                velocity.decelerate(clumpy_geom_AxialVelocity.Y);
+                dragon.velocity.decelerate(clumpy_geom_AxialVelocity.Z);
                 break;
             // arrow right - 39
             case 39:
-                velocity.accelerate(clumpy_geom_AxialVelocity.X);
+                dragon.velocity.accelerate(clumpy_geom_AxialVelocity.X);
                 break;
             // arrow down - 40
             case 40:
-                velocity.accelerate(clumpy_geom_AxialVelocity.Y);
+                dragon.velocity.accelerate(clumpy_geom_AxialVelocity.Z);
                 break;
         }
     }
@@ -72,7 +75,7 @@
 
 <style>
     html, body {width:100%; height:100%;}
-    #canvas1 {position:absolute; z-index:1; top:0; left:0; width:1000px; height:1000px;}
+    #canvas1 {position:absolute; z-index:1; top:0; left:0; width:500px; height:500px;}
     #canvas2 {position:absolute; z-index:2; top:0; left:0; border:2px solid black;} 
 </style>
 </head>
