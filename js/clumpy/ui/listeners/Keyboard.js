@@ -4,6 +4,8 @@ function clumpy_ui_listeners_Keyboard(autoStart, repeatInitialDelay, repeatDelay
     this.repeatDelay = repeatDelay ? repeatDelay : 250;
     this._callbackDown = {};
     this._callbackUp = {};
+    this._preventDefaultDown = {};
+    this._preventDefaultUp = {};
     this._keysDown = {};
     this._isRepeating = {};
     this._repeatIntervalIds = {};
@@ -34,27 +36,32 @@ clumpy_ui_listeners_Keyboard.prototype.translateKeyCode = function(keyCodeOrStri
     }
     return keyCodeOrString.toUpperCase().charCodeAt(0);
 };
-clumpy_ui_listeners_Keyboard.prototype.addUp = function(keyCodeOrString, callback) {
+clumpy_ui_listeners_Keyboard.prototype.addUp = function(keyCodeOrString, callback, preventDefault) {
     var keyCode = this.translateKeyCode(keyCodeOrString);
     this._callbackUp[keyCode] = callback;
+    this._preventDefaultUp[keyCode] = preventDefault;
     return this;
 };
 clumpy_ui_listeners_Keyboard.prototype.removeUp = function(keyCodeOrString) {
-    var keyCode = this.getKeyCode(keyCodeOrString);
+    var keyCode = this.translateKeyCode(keyCodeOrString);
     delete this._callbackUp[keyCode];
+    delete this._preventDefaultUp[keyCode];
     return this;
 };
-clumpy_ui_listeners_Keyboard.prototype.addDown = function(keyCodeOrString, callback, autoRepeat) {
+clumpy_ui_listeners_Keyboard.prototype.addDown = function(keyCodeOrString, callback, autoRepeat, preventDefault) {
     var keyCode = this.translateKeyCode(keyCodeOrString);
     this._callbackDown[keyCode] = callback;
     if(autoRepeat){
         this._isRepeating[keyCode] = true;
     }
+    this._preventDefaultDown[keyCode] = preventDefault;
     return this;
 };
 clumpy_ui_listeners_Keyboard.prototype.removeDown = function(keyCodeOrString) {
-    var keyCode = this.getKeyCode(keyCodeOrString);
+    var keyCode = this.translateKeyCode(keyCodeOrString);
     delete this._callbackDown[keyCode];
+    delete this._preventDefaultDown[keyCode];
+    delete this._isRepeating[keyCode];
     return this;
 };
 clumpy_ui_listeners_Keyboard.prototype.clear = function(){
@@ -69,7 +76,8 @@ clumpy_ui_listeners_Keyboard.prototype._onKeyDown = function(e){
     if(this._isRepeating[e.keyCode]){
         this._startRepeat(e.keyCode);
     }
-    this.sendKeyDown(e.keyCode);
+    this.sendKeyDown(e.keyCode, e);
+    return;
 };
 clumpy_ui_listeners_Keyboard.prototype._onKeyUp = function(e){
     e = clumpy.getEventObject(e);
@@ -90,19 +98,25 @@ clumpy_ui_listeners_Keyboard.prototype._continueRepeat = function(keyCode){
     this.sendKeyDown(keyCode);
     this._repeatIntervalIds[keyCode] = setInterval(function(){this.sendKeyDown(keyCode);}.bindContext(this), this.repeatDelay);
 };
-clumpy_ui_listeners_Keyboard.prototype.sendKeyDown = function(keyCode){
+clumpy_ui_listeners_Keyboard.prototype.sendKeyDown = function(keyCode, e){
     if(this._callbackDown[keyCode]) {
         // sometimes a callback is not passed, rather the eventing pipeline is used
         if(typeof(this._callbackDown[keyCode]) === "function"){
             this._callbackDown[keyCode](keyCode);
+            if(e && this._preventDefaultDown[keyCode]){
+                e.preventDefault();
+            }
         }
     }
     clumpy_eventing_Callbacks.call(clumpy_ui_listeners_Keyboard.EVENT_KEY_DOWN, this, keyCode);
 };
-clumpy_ui_listeners_Keyboard.prototype.sendKeyUp = function(keyCode){
+clumpy_ui_listeners_Keyboard.prototype.sendKeyUp = function(keyCode, e){
     if(this._callbackUp[keyCode]) {
         if(typeof(this._callbackUp[keyCode]) === "function"){
             this._callbackUp[keyCode](keyCode);
+            if(e && this._preventDefaultUp[keyCode]){
+                e.preventDefault();
+            }
         }
     }
     clumpy_eventing_Callbacks.call(clumpy_ui_listeners_Keyboard.EVENT_KEY_UP, this, keyCode);

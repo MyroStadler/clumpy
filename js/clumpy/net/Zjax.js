@@ -75,6 +75,7 @@ function clumpy_net_Zjax(debug){
     this.version = 1;
     this.collection = {};
     this.timeoutById = {};
+    this.jqXHR = {};
     this.debug = debug === true;
 };
 clumpy_net_Zjax.prototype.log = function(msg) {
@@ -84,9 +85,16 @@ clumpy_net_Zjax.prototype.log = function(msg) {
 };
 clumpy_net_Zjax.prototype.zjaxDone = function(id, description) {
     this.log('Zjax done, id=' + id + ', desc=' + (description ? description : ''));
+    // can not do the xhr deletion in always because requests chained from done or faile will be deleted
+    if(this.jqXHR[id]){
+        delete this.jqXHR[id];
+    }
 };
 clumpy_net_Zjax.prototype.zjaxFail = function(id, description) {
     this.log('Zjax fail, id=' + id + ', desc=' + (description ? description : ''));
+    if(this.jqXHR[id]){
+        delete this.jqXHR[id];
+    }
 };
 clumpy_net_Zjax.prototype.zjaxAlways = function(id, description) {
     this.log('Zjax always, id=' + id + ', desc=' + (description ? description : ''));
@@ -111,6 +119,12 @@ clumpy_net_Zjax.prototype.remove = function(id) {
 //        console.log('remove ' + id);
     this.stop(id);
     delete this.collection[id];
+};
+clumpy_net_Zjax.prototype.abort = function(id) {
+    if(this.jqXHR[id]){
+        this.jqXHR[id].abort();
+        delete this.jqXHR[id];
+    }
 };
 clumpy_net_Zjax.prototype.execute = function(id, optionalDataSubstitute){
 //        console.log('execute ' + id);
@@ -152,6 +166,7 @@ clumpy_net_Zjax.prototype.execute = function(id, optionalDataSubstitute){
     if(restoreData !== false) {
         settings.ajaxObj().data = restoreData;
     }
+    this.jqXHR[id] = request;
     return this;
 };
 clumpy_net_Zjax.prototype.getSettings = function(id) {
