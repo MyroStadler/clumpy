@@ -46,6 +46,16 @@ clumpy_math_Trig.rotate = function (ao, rads) {
         o: clumpy_math_Trig.solveOHT(H, currentRads + rads)
     };
 };
+clumpy_math_Trig.rotateSet = function (ao, rads) {
+    var H = clumpy_math_Trig.solveH(ao.a, ao.o);
+    if (H === 0) {
+        H = 0.001;
+    }
+    return {
+        a: clumpy_math_Trig.solveAHT(H, rads),
+        o: clumpy_math_Trig.solveOHT(H, rads)
+    };
+};
 clumpy_math_Trig.signAs = function (changeSign, toThis) {
     if (toThis >= 0) {
         return Math.abs(changeSign);
