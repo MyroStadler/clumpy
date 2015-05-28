@@ -1,6 +1,8 @@
 clumpy
 ======
 
+[This is so old now, only really useful for the 3d stuff. Standard libraries have caught up :)]
+
 clumpy is my javascript library that has the bits I often miss in the general javascript implementation. It was born out of practical need.
 
 I am developing other libraries / helpers that live with clumpy, they all require clumpy but not necessarily anything else. A notable exception is where something is built to take advantage of JQuery, like zjax.
